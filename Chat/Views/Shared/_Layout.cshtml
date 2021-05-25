@@ -1,0 +1,132 @@
+﻿@inject UserManager<IdentityUser> userManager
+@inject SignInManager<IdentityUser> signInManager
+@inject AppDbContext _context
+
+@{
+    int messageCount = _context.Messages.Where(m => m.IsRead == false && m.SenderId != userManager.GetUserId(User) && m.ReceiverId == userManager.GetUserId(User)).GroupBy(g => g.SenderId).Count();
+
+    var messages = _context.Messages.Include(t => t.Sender).Where(m => m.SenderId != userManager.GetUserId(User)).ToList().GroupBy(g => g.SenderId).Select((value) => new
+    {
+        Sender = value.FirstOrDefault().Sender.UserName,
+        Count = value.Count(),
+        IsNew = value.Any(a => a.IsRead == false),
+        AllRead = value.All(e => e.IsRead == true),
+        FriendId = value.Key
+    }).ToList();
+}
+<!doctype html>
+<html class="no-js" lang="en">
+
+<!-- Mirrored from preview.hasthemes.com/eduhome/signup.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 25 Apr 2021 12:13:33 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Idea</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- Place favicon.ico in the root directory -->
+
+    <link rel="stylesheet" href="~/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/animate.css">
+    <link rel="stylesheet" href="~/css/meanmenu.css">
+    <link rel="stylesheet" href="~/css/magnific-popup.css">
+    <link rel="stylesheet" href="~/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/css/et-line-icon.css">
+    <link rel="stylesheet" href="~/css/reset.css">
+    <link rel="stylesheet" href="~/css/ionicons.min.css">
+    <link rel="stylesheet" href="~/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="~/css/responsive.css">
+    <link rel="stylesheet" href="~/css/style.css">
+
+    <script src="~/js/vendor/modernizr-2.8.3.min.js"></script>
+</head>
+<body>
+    <!--[if lt IE 8]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <!-- Header Area Start -->
+    <header class="top">
+        <div class="header-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-sm-8 col-xs-12">
+                        <div class="header-top-left">
+                            <p style="color: #2C2B5E">Idea <i class="far fa-lightbulb fa-2x" style="color: #2C2B5E"></i></p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="header-top-right text-right">
+                            @if (signInManager.IsSignedIn(User))
+                            {
+                                <ul class="d-flex">
+                                    <li><a>@userManager.GetUserName(User)</a></li>
+                                    <li><a title="Friends" asp-controller="home" asp-action="index"><i class="fas fa-users"></i></a></li>
+                                    @*<li><a><i class="far fa-envelope"></i></a></li>*@
+                                    <li><a asp-controller="account" asp-action="logout">Exit</a></li>
+                                    <li class="nav-item notif-content">
+                                        <a class="nav-link text-dark notif-content-icon" href="#">
+                                            <i class="far fa-bell"></i>
+                                            <span class="badge badge-danger">@(messageCount>0? messageCount.ToString():"")</span>
+                                        </a>
+                                        <ul>
+                                            @foreach (var item in messages)
+                                            {
+                                                <li>
+                                                    <a asp-controller="home" asp-action="chat" asp-route-friendId="@item.FriendId" class="@(!item.AllRead?"isRead":"")">
+                                                        <div class="notif">
+                                                            <h3>You have notification!</h3>
+                                                            <p>Message from @item.Sender</p>
+                                                            <span class="badge badge-danger">@item.Count</span>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </li>
+
+                                </ul>
+                            }
+                            else
+                            {
+                                <ul>
+                                    <li><a asp-controller="account" asp-action="login">login</a></li>
+                                    <li><a asp-controller="account" asp-action="register">register</a></li>
+                                </ul>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Header Area End -->
+
+    @RenderBody()
+
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/chat.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+
+    <script src="~/js/vendor/jquery-1.12.0.min.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/jquery.meanmenu.js"></script>
+    <script src="~/js/jquery.magnific-popup.js"></script>
+    <script src="~/js/ajax-mail.js"></script>
+    <script src="~/js/owl.carousel.min.js"></script>
+    <script src="~/js/jquery.mb.YTPlayer.js"></script>
+    <script src="~/js/jquery.nicescroll.min.js"></script>
+    <script src="~/js/plugins.js"></script>
+    <script src="~/js/main.js"></script>
+</body>
+
+<!-- Mirrored from preview.hasthemes.com/eduhome/signup.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 25 Apr 2021 12:13:33 GMT -->
+</html>
+

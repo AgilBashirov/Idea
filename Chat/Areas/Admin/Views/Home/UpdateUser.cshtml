@@ -1,0 +1,38 @@
+﻿@model CustomUser
+@{
+    ViewData["Title"] = "UpdateUser";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Update User</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6">
+            <form asp-area="admin" asp-controller="home" asp-action="updateuser" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label">Email</label>
+                    <input asp-for="Email" class="form-control" readonly>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label">Name</label>
+                    <input asp-for="Name" class="form-control">
+                </div>
+
+
+                <div class="mb-3">
+                    <label asp-for="RoleId" class="form-label">Role</label>
+                    <select asp-for="RoleId" asp-items="@Model.Roles" class="form-control">
+                        <option disabled selected>Select role</option>
+                    </select>
+                </div>
+                <input asp-for="@Model.Id" hidden>
+
+                <button type="submit" class="btn btn-primary">Update</button>
+            </form>
+        </div>
+    </div>
+</div>
+

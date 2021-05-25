@@ -1,0 +1,36 @@
+﻿@model List<Message>
+@inject UserManager<IdentityUser> userManager
+@{
+    ViewData["Title"] = "Chat";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<section class="notice-area pt-50 pb-50">
+
+    <div class="container chat-page">
+        <h1>Chat with @ViewBag.Friend.Name</h1>
+        <hr />
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="cont">
+                    <div id="message-box">
+                        @foreach (var message in Model)
+                        {
+                            <div class="message @(ViewBag.Friend.Id==message.SenderId ?"reciever":"sender")">
+                                <p class="message-text">@message.MessageText</p>
+                                <span class="message-date">@message.Date.ToString("dd.MM.yyyy HH:mm")</span>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div id="message-input">
+                    <input type="text" id="message" class="form-control" autofocus placeholder="message..." />
+                    <input hidden id="friend-id" value="@ViewBag.Friend.Id" />
+                    <button class="btn btn-primary" id="sendButton">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>

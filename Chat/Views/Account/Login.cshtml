@@ -1,0 +1,39 @@
+﻿@model VmLogin
+@{
+    ViewData["Title"] = "Login";
+}
+
+<!-- Login start -->
+<div class="register-area pt-50 pb-50">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 text-center">
+                <div class="login">
+                    <div class="login-form-container">
+                        <div class="login-text">
+                            <h2>Login</h2>
+                            <span>Please login if you have a account</span>
+                        </div>
+                        <div class="login-form">
+                            <form asp-controller="account" asp-action="login" method="post">
+                                <input asp-for="@Model.Email" type="text" placeholder="Email">
+                                <span asp-validation-for="@Model.Email"></span>
+
+                                <input asp-for="@Model.Password" type="password" placeholder="Password">
+                                <span asp-validation-for="@Model.Password"></span>
+
+                                <div class="button-box">
+                                    <div class="login-toggle-btn">
+                                        <a asp-controller="account" asp-action="register">Create account</a>
+                                        <button type="submit" class="default-btn">Login</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Login end -->

@@ -1,0 +1,25 @@
+﻿@model List<CustomUser>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<section class="notice-area pt-50 pb-50">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="notice-left">
+                    <h3>Friends</h3>
+                    @foreach (var user in Model)
+                    {
+                        <div class="single-notice-left mb-25 pb-25">
+                            <li class="list-group-item"><a asp-controller="home" asp-action="chat" asp-route-friendId="@user.Id">@user.Name - @user.UserName <span id="@user.Id" class="isNotActive @(user.IsActive == true?"isActive":"")"></span></a></li>
+</div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

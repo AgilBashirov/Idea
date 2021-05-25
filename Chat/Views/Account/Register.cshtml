@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewData["Title"] = "Register";
+}
+@model VmRegister
+<!-- Register start -->
+<div class="register-area pt-50 pb-50">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 text-center">
+                <div class="login">
+                    <div class="login-form-container">
+                        <div class="login-text">
+                            <h2>Register</h2>
+                            <span>Please register if you don't have a account</span>
+                        </div>
+                        <div class="login-form">
+                            <form asp-controller="account" asp-action="register" method="post">
+                                <input asp-for="@Model.Name" type="text" placeholder="Name">
+                                <span asp-validation-for="@Model.Name"></span>
+
+                                <input asp-for="@Model.Email" type="text" placeholder="Email">
+                                <span asp-validation-for="@Model.Email"></span>
+
+                                <input asp-for="@Model.Password" type="password" placeholder="Password">
+                                <span asp-validation-for="@Model.Password"></span>
+
+                                <input asp-for="@Model.ConfirmPassword" type="password" placeholder="Confirm Password">
+                                <span asp-validation-for="@Model.ConfirmPassword"></span>
+
+                                <button type="submit" class="default-btn">Register</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Register end -->
